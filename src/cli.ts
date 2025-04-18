@@ -12,20 +12,24 @@ if (command === 'on') {
   const serverPath = path.join(__dirname, 'server.js');
   const child = spawn('node', [serverPath], {
     detached: true,
-    stdio: 'inherit'
+    stdio: ['ignore', 'ignore', 'ignore']
   });
   
   child.unref();
   console.log('Vibes flowing! The Matrix has you...');
   console.log('MCP running at http://localhost:3000');
   
+  // Exit after starting the server process
+  process.exit(0);
+  
 } else if (command === 'off') {
   console.log('Shutting down vibes...');
   
   // Find and kill the MCP server process
-  const killProcess = spawn('pkill', ['-f', 'vibes on']);
+  const killProcess = spawn('pkill', ['-f', 'node.*server.js']);
   killProcess.on('close', (code) => {
     console.log('Vibes disconnected. Returning to reality.');
+    process.exit(0);
   });
   
 } else {
