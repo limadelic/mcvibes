@@ -1,6 +1,6 @@
 {
   "name": "mcvibes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flow-based development methodology from TCR to DDD",
   "main": "dist/server.js",
   "bin": {
