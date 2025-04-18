@@ -68,15 +68,21 @@ async function runTcr() {
       console.log('Changes reverted. Try again after fixing your code.');
     }
     
-    // Wait a moment for socket to send before exiting
+    // Wait a moment for socket to send before exiting, but not too long
     await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Socket communication completed or timed out');
+    // Force socket disconnect to prevent hanging
+    socket.disconnect();
     
   } catch (error) {
     reportResult(false, error);
     console.error('TCR process failed:', error);
     
-    // Wait a moment for socket to send before exiting
+    // Wait a moment for socket to send before exiting, but not too long
     await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('Socket communication completed or timed out');
+    // Force socket disconnect to prevent hanging
+    socket.disconnect();
     process.exit(1);
   }
 }
