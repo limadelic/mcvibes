@@ -1,14 +1,22 @@
 {
-  "name": "vibeflow",
+  "name": "mcvibes",
   "version": "0.1.0",
   "description": "Flow-based development methodology from TCR to DDD",
   "main": "dist/server.js",
+  "bin": {
+    "vibes": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build",
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "jest",
     "tcr": "ts-node src/core/tcr.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limadelic/mcvibes.git"
   },
   "keywords": [
     "tcr",
@@ -19,8 +27,12 @@
     "ddd",
     "vibeflow"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "limadelic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/limadelic/mcvibes/issues"
+  },
+  "homepage": "https://github.com/limadelic/mcvibes#readme",
   "dependencies": {
     "axios": "^1.4.0",
     "express": "^4.18.2",
