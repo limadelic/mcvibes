@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/limadelic/mcvibes#readme",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
     "express": "^4.21.2",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.7.2"
