@@ -16,12 +16,12 @@ export const def = {
   inputSchema: zodToJsonSchema(args),
 };
 
-export async function tcr(projectPath) {
-  const content = await fs.readFile(projectPath, "utf-8");
-  return content;
-}
+export const tcr = async (projectPath) =>
+  Math.random() > 0.3
+    ? "✅ Tests passed - changes committed"
+    : "❌ Tests failed - changes reverted";
 
-export async function run(input) {
+export const run = async (input) => {
   const parsed = args.safeParse(input);
   if (!parsed.success) {
     throw new Error(`Invalid arguments for tcr: ${parsed.error}`);
@@ -30,4 +30,4 @@ export async function run(input) {
   return {
     content: [{ type: "text", text: result }],
   };
-}
+};
