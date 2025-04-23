@@ -3,14 +3,14 @@
 case "$1" in
   on)
     echo "MC Vibes in the house! Let's break some code down!" >&2
-    node ./dist/index.js
+    node dist/index.js
     ;;
   on!)
-    nohup node ./dist/index.js > /tmp/mcvibes.log 2>&1 &
+    nohup node dist/index.js > /tmp/mcvibes.log 2>&1 &
     echo "MC Vibes in the house! Let's break some code down!" >&2
     ;;
   off)
-    pkill -f 'node ./dist/index.js' || true
+    pkill -f 'node dist/index.js' || true
     echo "MC Vibes has left the building! Peace out!" >&2
     ;;
   *)
