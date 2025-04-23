@@ -6,7 +6,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { def, handleTcrRequest } from "./tcr.js";
+import { def, handle } from "./tcr.js";
 
 const server = new Server(
   {
@@ -32,7 +32,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
     switch (name) {
       case "tcr": {
-        return await handleTcrRequest(args);
+        return await handle(args);
       }
 
       default:

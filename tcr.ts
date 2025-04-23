@@ -21,7 +21,7 @@ export async function tcr(projectPath) {
   return content;
 }
 
-export async function handleTcrRequest(input) {
+export async function handle(input) {
   const parsed = args.safeParse(input);
   if (!parsed.success) {
     throw new Error(`Invalid arguments for tcr: ${parsed.error}`);
