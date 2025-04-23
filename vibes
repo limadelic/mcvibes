@@ -1,27 +1,31 @@
 #!/bin/bash
 
+out() {
+  echo "$@" >&2
+}
+
 # Get the directory where this script is located
 SCRIPT_DIR="$(dirname "$0")"
 cd "$SCRIPT_DIR" || exit 1
 
 case "$1" in
   on)
-    echo "MC Vibes in the house! Let's break some code down!" >&2
+    out "MC Vibes in the house! Let's break some code down!"
     node dist/index.js
     ;;
   on!)
     nohup node dist/index.js > /tmp/mcvibes.log 2>&1 &
-    echo "MC Vibes in the house! Let's break some code down!" >&2
+    out "MC Vibes in the house! Let's break some code down!"
     ;;
   off)
     pkill -f "node.*dist/index.js" || true
-    echo "MC Vibes has left the building! Peace out!" >&2
+    out "MC Vibes has left the building! Peace out!"
     ;;
   *)
-    echo "Usage: vibes [on|on!|off]" >&2
-    echo "  on  - foreground mode" >&2
-    echo "  on! - background mode" >&2
-    echo "  off - stop MC Vibes" >&2
+    out "Usage: vibes [on|on!|off]"
+    out "  on  - foreground mode"
+    out "  on! - background mode"
+    out "  off - stop MC Vibes"
     exit 1
     ;;
 esac
