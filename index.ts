@@ -6,21 +6,14 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import fs from "fs/promises";
-import {
-  ReadFileArgsSchema,
-  readFileToolDefinition,
-  handleReadFileRequest,
-} from "./readFile.js";
+import { readFileToolDefinition, handleReadFileRequest } from "./readFile.js";
 
-// Command line argument parsing
 const args = process.argv.slice(2);
 if (args.length === 0) {
   console.error("Usage: mcvibes <directory>");
   process.exit(1);
 }
 
-// Server setup
 const server = new Server(
   {
     name: "secure-filesystem-server",
@@ -33,9 +26,6 @@ const server = new Server(
   },
 );
 
-// Tool implementations
-
-// Tool handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [readFileToolDefinition],
@@ -63,7 +53,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
-// Start server
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
