@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
-export const TcrArgsSchema = z.object({
+export const args = z.object({
   path: z.string(),
 });
 
@@ -13,16 +13,16 @@ export const def = {
     "Automatically detects project type and runs appropriate tests. " +
     "If tests pass, changes are committed. If tests fail, changes are reverted. " +
     "Works with any project type without configuration.",
-  inputSchema: zodToJsonSchema(TcrArgsSchema),
+  inputSchema: zodToJsonSchema(args),
 };
 
-export async function tcr(projectPath: string) {
+export async function tcr(projectPath) {
   const content = await fs.readFile(projectPath, "utf-8");
   return content;
 }
 
-export async function handleTcrRequest(args: unknown) {
-  const parsed = TcrArgsSchema.safeParse(args);
+export async function handleTcrRequest(input) {
+  const parsed = args.safeParse(input);
   if (!parsed.success) {
     throw new Error(`Invalid arguments for tcr: ${parsed.error}`);
   }
