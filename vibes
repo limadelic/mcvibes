@@ -4,9 +4,10 @@ out() {
   echo "$@" >&2
 }
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(dirname "$0")"
-cd "$SCRIPT_DIR" || exit 1
+# Find the real location of the installed package (works for symlinks)
+SCRIPT_PATH="$(realpath "$0")"
+PKG_DIR="$(dirname "$SCRIPT_PATH")"
+cd "$PKG_DIR" || exit 1
 
 case "$1" in
   on)
