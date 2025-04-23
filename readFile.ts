@@ -19,25 +19,18 @@ export const readFileToolDefinition = {
 };
 
 // Read file implementation
-export async function readFile(
-  filePath: string,
-  validatePath: (path: string) => Promise<string>,
-) {
-  const validPath = await validatePath(filePath);
-  const content = await fs.readFile(validPath, "utf-8");
+export async function readFile(filePath: string) {
+  const content = await fs.readFile(filePath, "utf-8");
   return content;
 }
 
 // Handler for read_file tool requests
-export async function handleReadFileRequest(
-  args: unknown,
-  validatePath: (path: string) => Promise<string>,
-) {
+export async function handleReadFileRequest(args: unknown) {
   const parsed = ReadFileArgsSchema.safeParse(args);
   if (!parsed.success) {
     throw new Error(`Invalid arguments for read_file: ${parsed.error}`);
   }
-  const content = await readFile(parsed.data.path, validatePath);
+  const content = await readFile(parsed.data.path);
   return {
     content: [{ type: "text", text: content }],
   };
