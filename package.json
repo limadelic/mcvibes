@@ -1,14 +1,18 @@
 {
-  "name": "@modelcontextprotocol/server-filesystem",
-  "version": "0.6.2",
-  "description": "MCP server for filesystem access",
+  "name": "mcvibes",
+  "version": "0.2.3",
+  "description": "MCP vibes for filesystems",
   "license": "MIT",
-  "author": "Anthropic, PBC (https://anthropic.com)",
-  "homepage": "https://modelcontextprotocol.io",
-  "bugs": "https://github.com/modelcontextprotocol/servers/issues",
+  "author": "limadelic",
+  "homepage": "https://github.com/limadelic/mcvibes",
+  "bugs": "https://github.com/limadelic/mcvibes/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limadelic/mcvibes.git"
+  },
   "type": "module",
   "bin": {
-    "mcp-server-filesystem": "dist/index.js"
+    "mcvibes": "dist/index.js"
   },
   "files": [
     "dist"
@@ -16,7 +20,8 @@
   "scripts": {
     "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.5.0",
