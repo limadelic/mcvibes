@@ -1,7 +1,6 @@
 import fs from "fs/promises";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { execSync } from "child_process";
 
 export const RunTcrArgsSchema = z.object({
   path: z.string(),

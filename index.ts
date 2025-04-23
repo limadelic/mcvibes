@@ -6,7 +6,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { runTcrToolDefinition, handleRunTcrRequest } from "./readFile.js";
+import { runTcrToolDefinition, handleRunTcrRequest } from "./tcr.js";
 
 const server = new Server(
   {
