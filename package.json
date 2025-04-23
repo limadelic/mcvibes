@@ -1,6 +1,6 @@
 {
   "name": "mcvibes",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Universal TCR (Test && Commit || Revert) tool",
   "license": "MIT",
   "author": "limadelic",

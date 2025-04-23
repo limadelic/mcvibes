@@ -11,7 +11,7 @@ import { def, run } from "./tcr.js";
 const server = new Server(
   {
     name: "mcvibes",
-    version: "0.2.5",
+    version: "0.2.6",
   },
   {
     capabilities: {
