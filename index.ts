@@ -16,8 +16,8 @@ if (args.length === 0) {
 
 const server = new Server(
   {
-    name: "secure-filesystem-server",
-    version: "0.2.0",
+    name: "mcvibes",
+    version: "0.2.3",
   },
   {
     capabilities: {
