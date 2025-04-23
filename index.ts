@@ -6,7 +6,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { readFileToolDefinition, handleReadFileRequest } from "./readFile.js";
+import { runTcrToolDefinition, handleRunTcrRequest } from "./readFile.js";
 
 const server = new Server(
   {
@@ -22,7 +22,7 @@ const server = new Server(
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
-    tools: [readFileToolDefinition],
+    tools: [runTcrToolDefinition],
   };
 });
 
@@ -31,8 +31,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-      case "read_file": {
-        return await handleReadFileRequest(args);
+      case "run_tcr": {
+        return await handleRunTcrRequest(args);
       }
 
       default:
