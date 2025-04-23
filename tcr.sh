@@ -25,13 +25,21 @@ npm run pretty > /dev/null 2>&1
 # Check number of files changed
 CHANGED_FILES=$(git diff --name-only | wc -l)
 CHANGED_FILES_STAGED=$(git diff --staged --name-only | wc -l)
-TOTAL_CHANGED_FILES=$((CHANGED_FILES + CHANGED_FILES_STAGED))
+UNTRACKED_FILES=$(git ls-files --others --exclude-standard | wc -l)
+TOTAL_CHANGED_FILES=$((CHANGED_FILES + CHANGED_FILES_STAGED + UNTRACKED_FILES))
 
 # List changed files
 echo "Files changed:"
 echo ""
 git diff --name-only
 git diff --staged --name-only
+
+# List untracked files
+UNTRACKED=$(git ls-files --others --exclude-standard)
+if [ -n "$UNTRACKED" ]; then
+    echo "New files:"
+    git ls-files --others --exclude-standard
+fi
 
 # Check if too many files changed
 if [ $TOTAL_CHANGED_FILES -gt 2 ] && [ "$2" != "$TOTAL_CHANGED_FILES" ]; then
