@@ -9,14 +9,16 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import fs from "fs/promises";
 import path from "path";
-import os from 'os';
+import os from "os";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 // Command line argument parsing
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error("Usage: mcp-server-filesystem <allowed-directory> [additional-directories...]");
+  console.error(
+    "Usage: mcp-server-filesystem <allowed-directory> [additional-directories...]",
+  );
   process.exit(1);
 }
 
@@ -26,30 +28,32 @@ function normalizePath(p) {
 }
 
 function expandHome(filepath) {
-  if (filepath.startsWith('~/') || filepath === '~') {
+  if (filepath.startsWith("~/") || filepath === "~") {
     return path.join(os.homedir(), filepath.slice(1));
   }
   return filepath;
 }
 
 // Store allowed directories in normalized form
-const allowedDirectories = args.map(dir =>
-  normalizePath(path.resolve(expandHome(dir)))
+const allowedDirectories = args.map((dir) =>
+  normalizePath(path.resolve(expandHome(dir))),
 );
 
 // Validate that all directories exist and are accessible
-await Promise.all(args.map(async (dir) => {
-  try {
-    const stats = await fs.stat(expandHome(dir));
-    if (!stats.isDirectory()) {
-      console.error(`Error: ${dir} is not a directory`);
+await Promise.all(
+  args.map(async (dir) => {
+    try {
+      const stats = await fs.stat(expandHome(dir));
+      if (!stats.isDirectory()) {
+        console.error(`Error: ${dir} is not a directory`);
+        process.exit(1);
+      }
+    } catch (error) {
+      console.error(`Error accessing directory ${dir}:`, error);
       process.exit(1);
     }
-  } catch (error) {
-    console.error(`Error accessing directory ${dir}:`, error);
-    process.exit(1);
-  }
-}));
+  }),
+);
 
 // Security utilities
 async function validatePath(requestedPath: string): Promise<string> {
@@ -61,18 +65,26 @@ async function validatePath(requestedPath: string): Promise<string> {
   const normalizedRequested = normalizePath(absolute);
 
   // Check if path is within allowed directories
-  const isAllowed = allowedDirectories.some(dir => normalizedRequested.startsWith(dir));
+  const isAllowed = allowedDirectories.some((dir) =>
+    normalizedRequested.startsWith(dir),
+  );
   if (!isAllowed) {
-    throw new Error(`Access denied - path outside allowed directories: ${absolute} not in ${allowedDirectories.join(', ')}`);
+    throw new Error(
+      `Access denied - path outside allowed directories: ${absolute} not in ${allowedDirectories.join(", ")}`,
+    );
   }
 
   // Handle symlinks by checking their real path
   try {
     const realPath = await fs.realpath(absolute);
     const normalizedReal = normalizePath(realPath);
-    const isRealPathAllowed = allowedDirectories.some(dir => normalizedReal.startsWith(dir));
+    const isRealPathAllowed = allowedDirectories.some((dir) =>
+      normalizedReal.startsWith(dir),
+    );
     if (!isRealPathAllowed) {
-      throw new Error("Access denied - symlink target outside allowed directories");
+      throw new Error(
+        "Access denied - symlink target outside allowed directories",
+      );
     }
     return realPath;
   } catch (error) {
@@ -81,9 +93,13 @@ async function validatePath(requestedPath: string): Promise<string> {
     try {
       const realParentPath = await fs.realpath(parentDir);
       const normalizedParent = normalizePath(realParentPath);
-      const isParentAllowed = allowedDirectories.some(dir => normalizedParent.startsWith(dir));
+      const isParentAllowed = allowedDirectories.some((dir) =>
+        normalizedParent.startsWith(dir),
+      );
       if (!isParentAllowed) {
-        throw new Error("Access denied - parent directory outside allowed directories");
+        throw new Error(
+          "Access denied - parent directory outside allowed directories",
+        );
       }
       return absolute;
     } catch {
@@ -117,7 +133,6 @@ const server = new Server(
 
 // Tool implementations
 
-
 // Tool handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
@@ -130,11 +145,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "if the file cannot be read. Use this tool when you need to examine " +
           "the contents of a single file. Only works within allowed directories.",
         inputSchema: zodToJsonSchema(ReadFileArgsSchema),
-      }
+      },
     ],
   };
 });
-
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
