@@ -12,7 +12,6 @@ import path from "path";
 import os from "os";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { runTcr } from "./tcr.js";
 import {
   ReadFileArgsSchema,
   readFileToolDefinition,
@@ -115,9 +114,6 @@ async function validatePath(requestedPath: string): Promise<string> {
 }
 
 // Schema definitions
-const RunTcrArgsSchema = z.object({
-  path: z.string(),
-});
 
 const ToolInputSchema = ToolSchema.shape.inputSchema;
 // No type definitions
@@ -142,18 +138,7 @@ const server = new Server(
 // Tool handlers
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
-    tools: [
-      readFileToolDefinition,
-      {
-        name: "run_tcr",
-        description:
-          "Run TCR (Test && Commit || Revert) on a project. " +
-          "Automatically detects the project type and runs appropriate tests. " +
-          "If tests pass, changes are committed. If tests fail, changes are reverted. " +
-          "Only works within allowed directories.",
-        inputSchema: zodToJsonSchema(RunTcrArgsSchema),
-      },
-    ],
+    tools: [readFileToolDefinition],
   };
 });
 
@@ -164,18 +149,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     switch (name) {
       case "read_file": {
         return await handleReadFileRequest(args, validatePath);
-      }
-
-      case "run_tcr": {
-        const parsed = RunTcrArgsSchema.safeParse(args);
-        if (!parsed.success) {
-          throw new Error(`Invalid arguments for run_tcr: ${parsed.error}`);
-        }
-        const validPath = await validatePath(parsed.data.path);
-        const result = await runTcr({ projectPath: validPath });
-        return {
-          content: [{ type: "text", text: result }],
-        };
       }
 
       default:
