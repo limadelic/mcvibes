@@ -30,22 +30,6 @@ if (args.length === 0) {
 // Store directory arguments
 const directoryArgs = args.map((dir) => dir);
 
-// Validate that all directories exist and are accessible
-await Promise.all(
-  args.map(async (dir) => {
-    try {
-      const stats = await fs.stat(dir);
-      if (!stats.isDirectory()) {
-        console.error(`Error: ${dir} is not a directory`);
-        process.exit(1);
-      }
-    } catch (error) {
-      console.error(`Error accessing directory ${dir}:`, error);
-      process.exit(1);
-    }
-  }),
-);
-
 // Schema definitions
 
 const ToolInputSchema = ToolSchema.shape.inputSchema;
@@ -101,7 +85,7 @@ async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("MCP Filesystem Server running on stdio");
-  console.error("Directories:", directoryArgs);
+  console.error("MCVibes is ready");
 }
 
 runServer().catch((error) => {
