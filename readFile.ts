@@ -27,3 +27,18 @@ export async function readFile(
   const content = await fs.readFile(validPath, "utf-8");
   return content;
 }
+
+// Handler for read_file tool requests
+export async function handleReadFileRequest(
+  args: unknown,
+  validatePath: (path: string) => Promise<string>,
+) {
+  const parsed = ReadFileArgsSchema.safeParse(args);
+  if (!parsed.success) {
+    throw new Error(`Invalid arguments for read_file: ${parsed.error}`);
+  }
+  const content = await readFile(parsed.data.path, validatePath);
+  return {
+    content: [{ type: "text", text: content }],
+  };
+}

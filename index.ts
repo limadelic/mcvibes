@@ -16,7 +16,7 @@ import { runTcr } from "./tcr.js";
 import {
   ReadFileArgsSchema,
   readFileToolDefinition,
-  readFile,
+  handleReadFileRequest,
 } from "./readFile.js";
 
 // Command line argument parsing
@@ -163,14 +163,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
     switch (name) {
       case "read_file": {
-        const parsed = ReadFileArgsSchema.safeParse(args);
-        if (!parsed.success) {
-          throw new Error(`Invalid arguments for read_file: ${parsed.error}`);
-        }
-        const content = await readFile(parsed.data.path, validatePath);
-        return {
-          content: [{ type: "text", text: content }],
-        };
+        return await handleReadFileRequest(args, validatePath);
       }
 
       case "run_tcr": {
