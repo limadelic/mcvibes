@@ -58,7 +58,7 @@ if npm run build --silent && npm run test --silent; then
     echo "✅ Tests passed - committed: $1"
 else
     # If tests fail, revert all changes
-    # git reset --hard
-    # git clean -fd  # Remove untracked files and directories
+    git reset --hard
+    git clean -fd  # Remove untracked files and directories
     echo "❌ Tests failed - changes reverted"
 fi
