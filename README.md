@@ -2,6 +2,15 @@
 
 Node.js server implementing Model Context Protocol (MCP) for filesystem operations.
 
+## Vibe Code Like a Pro
+
+- Bootstrap via TCR
+- Flow using ATDD
+- Express through BDD
+- Think Tidy First?
+- Implement in Patterns
+- Scale with DDD
+
 ## Features
 
 - Read/write files
