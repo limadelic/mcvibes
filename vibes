@@ -2,6 +2,10 @@
 
 case "$1" in
   on)
+    echo "MC Vibes in the house! Let's break some code down!"
+    node dist/index.js
+    ;;
+  on!)
     nohup node dist/index.js > /tmp/mcvibes.log 2>&1 &
     echo "MC Vibes in the house! Let's break some code down!"
     ;;
@@ -10,7 +14,10 @@ case "$1" in
     echo "MC Vibes has left the building! Peace out!"
     ;;
   *)
-    echo "Usage: vibes [on|off]"
+    echo "Usage: vibes [on|on!|off]"
+    echo "  on  - foreground mode"
+    echo "  on! - background mode"
+    echo "  off - stop MC Vibes"
     exit 1
     ;;
 esac
