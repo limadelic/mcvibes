@@ -8,12 +8,6 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { readFileToolDefinition, handleReadFileRequest } from "./readFile.js";
 
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.error("Usage: mcvibes <directory>");
-  process.exit(1);
-}
-
 const server = new Server(
   {
     name: "mcvibes",
@@ -56,7 +50,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("MCP Filesystem Server running on stdio");
   console.error("MCVibes is ready");
 }
 
