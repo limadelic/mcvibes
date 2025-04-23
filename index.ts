@@ -12,6 +12,7 @@ import path from "path";
 import os from "os";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import { runTcr } from "./tcr.js";
 
 // Command line argument parsing
 const args = process.argv.slice(2);
@@ -113,6 +114,10 @@ const ReadFileArgsSchema = z.object({
   path: z.string(),
 });
 
+const RunTcrArgsSchema = z.object({
+  path: z.string(),
+});
+
 const ToolInputSchema = ToolSchema.shape.inputSchema;
 // No type definitions
 
@@ -146,6 +151,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "the contents of a single file. Only works within allowed directories.",
         inputSchema: zodToJsonSchema(ReadFileArgsSchema),
       },
+      {
+        name: "run_tcr",
+        description:
+          "Run TCR (Test && Commit || Revert) on a project. " +
+          "Automatically detects the project type and runs appropriate tests. " +
+          "If tests pass, changes are committed. If tests fail, changes are reverted. " +
+          "Only works within allowed directories.",
+        inputSchema: zodToJsonSchema(RunTcrArgsSchema),
+      },
     ],
   };
 });
@@ -164,6 +178,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const content = await fs.readFile(validPath, "utf-8");
         return {
           content: [{ type: "text", text: content }],
+        };
+      }
+
+      case "run_tcr": {
+        const parsed = RunTcrArgsSchema.safeParse(args);
+        if (!parsed.success) {
+          throw new Error(`Invalid arguments for run_tcr: ${parsed.error}`);
+        }
+        const validPath = await validatePath(parsed.data.path);
+        const result = await runTcr({ projectPath: validPath });
+        return {
+          content: [{ type: "text", text: result }],
         };
       }
 
