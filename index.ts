@@ -13,6 +13,11 @@ import os from "os";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { runTcr } from "./tcr.js";
+import {
+  ReadFileArgsSchema,
+  readFileToolDefinition,
+  readFile,
+} from "./readFile.js";
 
 // Command line argument parsing
 const args = process.argv.slice(2);
@@ -110,10 +115,6 @@ async function validatePath(requestedPath: string): Promise<string> {
 }
 
 // Schema definitions
-const ReadFileArgsSchema = z.object({
-  path: z.string(),
-});
-
 const RunTcrArgsSchema = z.object({
   path: z.string(),
 });
@@ -142,15 +143,7 @@ const server = new Server(
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
-      {
-        name: "read_file",
-        description:
-          "Read the complete contents of a file from the file system. " +
-          "Handles various text encodings and provides detailed error messages " +
-          "if the file cannot be read. Use this tool when you need to examine " +
-          "the contents of a single file. Only works within allowed directories.",
-        inputSchema: zodToJsonSchema(ReadFileArgsSchema),
-      },
+      readFileToolDefinition,
       {
         name: "run_tcr",
         description:
@@ -174,8 +167,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (!parsed.success) {
           throw new Error(`Invalid arguments for read_file: ${parsed.error}`);
         }
-        const validPath = await validatePath(parsed.data.path);
-        const content = await fs.readFile(validPath, "utf-8");
+        const content = await readFile(parsed.data.path, validatePath);
         return {
           content: [{ type: "text", text: content }],
         };
