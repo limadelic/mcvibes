@@ -6,7 +6,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { runTcrToolDefinition, handleRunTcrRequest } from "./tcr.js";
+import { def, handleTcrRequest } from "./tcr.js";
 
 const server = new Server(
   {
@@ -22,7 +22,7 @@ const server = new Server(
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
-    tools: [runTcrToolDefinition],
+    tools: [def],
   };
 });
 
@@ -31,8 +31,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-      case "run_tcr": {
-        return await handleRunTcrRequest(args);
+      case "tcr": {
+        return await handleTcrRequest(args);
       }
 
       default:
