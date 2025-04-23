@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(dirname "$0")"
+cd "$SCRIPT_DIR" || exit 1
+
 case "$1" in
   on)
     echo "MC Vibes in the house! Let's break some code down!" >&2
@@ -10,7 +14,7 @@ case "$1" in
     echo "MC Vibes in the house! Let's break some code down!" >&2
     ;;
   off)
-    pkill -f 'node dist/index.js' || true
+    pkill -f "node.*dist/index.js" || true
     echo "MC Vibes has left the building! Peace out!" >&2
     ;;
   *)
