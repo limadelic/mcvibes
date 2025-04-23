@@ -5,13 +5,8 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-  ToolSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import fs from "fs/promises";
-import path from "path";
-import os from "os";
-import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import {
   ReadFileArgsSchema,
   readFileToolDefinition,
@@ -21,21 +16,9 @@ import {
 // Command line argument parsing
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.error(
-    "Usage: mcp-server-filesystem <allowed-directory> [additional-directories...]",
-  );
+  console.error("Usage: mcvibes <directory>");
   process.exit(1);
 }
-
-// Store directory arguments
-const directoryArgs = args.map((dir) => dir);
-
-// Schema definitions
-
-const ToolInputSchema = ToolSchema.shape.inputSchema;
-// No type definitions
-
-// FileInfo object structure removed - no types in mcvibes
 
 // Server setup
 const server = new Server(
