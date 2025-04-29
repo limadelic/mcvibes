@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import * as tcr from "./tcr";
+import * as tcr from "./tcr.js";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
