@@ -29,12 +29,9 @@ async function run() {
   });
 
   const port = 3000;
-  app.listen(port, () => {
-    console.log("MC Vibes in the house! Let's break some code down!");
-  });
+  app.listen(port, () => {});
 
   process.on("SIGINT", () => {
-    console.log("MC Vibes has left the building! Peace out!");
     process.exit(0);
   });
 }
