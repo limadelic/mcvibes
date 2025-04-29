@@ -11,14 +11,14 @@ async function runServer() {
   app.use(cors());
   app.use(bodyParser.json());
 
-  app.post("/mcp/tools/list", (req, res) => {
+  app.post("/tools/list", (req, res) => {
     res.json({
       id: req.body.id,
       result: { tools: [tcr.def] },
     });
   });
 
-  app.post("/mcp/tools/call", async (req, res) => {
+  app.post("/tools/call", async (req, res) => {
     const { arguments: args } = req.body.params;
 
     const result = await tcr.run(args);
