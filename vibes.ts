@@ -19,10 +19,10 @@ async function run() {
   });
 
   app.post("/tools/call", async (req, res) => {
-    res.json({
-      id: req.body.id,
-      result: await tcr.run(req.body.params.arguments),
-    });
+    const args = req.body.params.arguments;
+    const id = req.body.id;
+    const result = await tcr.run(args);
+    res.json({ id, result });
   });
 
   const port = 3000;
