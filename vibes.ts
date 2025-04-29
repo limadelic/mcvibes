@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import * as tcr from "./tcr.js";
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
+import * as tcr from './tcr.js';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 async function run() {
   const app = express();
@@ -11,24 +11,27 @@ async function run() {
   app.use(cors());
   app.use(bodyParser.json());
 
-  app.post("/tools/list", (req, res) => {
+  app.post('/tools/list', (req, res) => {
     res.json({
       id: req.body.id,
       result: { tools: [tcr.def] },
     });
   });
 
-  app.post("/tools/call", async (req, res) => {
+  app.post('/tools/call', async (req, res) => {
     const id = req.body.id;
     const args = req.body.params.arguments;
     const result = await tcr.run(args);
     res.json({ id, result });
   });
 
-  const port = process.argv[2] ? parseInt(process.argv[2]) : 3000;
+  const port = process.argv[2]
+    ? parseInt(process.argv[2])
+    : 3000;
+
   app.listen(port, () => {});
 
-  process.on("SIGINT", () => {
+  process.on('SIGINT', () => {
     process.exit(0);
   });
 }

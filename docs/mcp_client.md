@@ -75,7 +75,10 @@ To connect to a server, you need:
   "method": "tools/call",
   "params": {
     "name": "example_tool",
-    "arguments": { "param1": "value1", "param2": 42 }
+    "arguments": {
+      "param1": "value1",
+      "param2": 42
+    }
   }
 }
 ```
@@ -86,7 +89,12 @@ To connect to a server, you need:
 {
   "id": "call-123",
   "result": {
-    "content": [{ "type": "text", "text": "Result of the tool execution" }]
+    "content": [
+      {
+        "type": "text",
+        "text": "Result of the tool execution"
+      }
+    ]
   }
 }
 ```

@@ -1088,19 +1088,20 @@ Clients can discover available prompts through the `prompts/list` endpoint:
 ```typescript
 // Request
 {
-  method: "prompts/list";
+  method: 'prompts/list';
 }
 
 // Response
 {
   prompts: [
     {
-      name: "analyze-code",
-      description: "Analyze code for potential improvements",
+      name: 'analyze-code',
+      description:
+        'Analyze code for potential improvements',
       arguments: [
         {
-          name: "language",
-          description: "Programming language",
+          name: 'language',
+          description: 'Programming language',
           required: true,
         },
       ],
@@ -1207,27 +1208,27 @@ When handling the `prompts/get` request:
 
 ```typescript
 const debugWorkflow = {
-  name: "debug-error",
+  name: 'debug-error',
   async getMessages(error: string) {
     return [
       {
-        role: "user",
+        role: 'user',
         content: {
-          type: "text",
+          type: 'text',
           text: `Here's an error I'm seeing: ${error}`,
         },
       },
       {
-        role: "assistant",
+        role: 'assistant',
         content: {
-          type: "text",
+          type: 'text',
           text: "I'll help analyze this error. What have you tried so far?",
         },
       },
       {
-        role: "user",
+        role: 'user',
         content: {
-          type: "text",
+          type: 'text',
           text: "I've tried restarting the service, but the error persists.",
         },
       },
@@ -3542,7 +3543,10 @@ To use an MCP server with Claude, add it to your configuration:
   "mcpServers": {
     "memory": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
     },
     "filesystem": {
       "command": "npx",
@@ -3554,7 +3558,10 @@ To use an MCP server with Claude, add it to your configuration:
     },
     "github": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
       }
