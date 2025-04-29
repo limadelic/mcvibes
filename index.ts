@@ -1,58 +1,42 @@
 #!/usr/bin/env node
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { def, run } from "./tcr.js";
-
-const server = new Server(
-  {
-    name: "mcvibes",
-    version: "0.2.8",
-  },
-  {
-    capabilities: {
-      tools: {},
-    },
-  },
-);
-
-server.setRequestHandler(ListToolsRequestSchema, async () => {
-  return {
-    tools: [def],
-  };
-});
-
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  try {
-    const { name, arguments: args } = request.params;
-
-    switch (name) {
-      case "tcr": {
-        return await run(args);
-      }
-
-      default:
-        throw new Error(`Unknown tool: ${name}`);
-    }
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
-      content: [{ type: "text", text: `Error: ${errorMessage}` }],
-      isError: true,
-    };
-  }
-});
+import * as tcr from "./tcr";
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
 
 async function runServer() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  const app = express();
+
+  app.use(cors());
+  app.use(bodyParser.json());
+
+  app.post("/mcp/tools/list", (req, res) => {
+    res.json({
+      id: req.body.id,
+      result: { tools: [tcr.def] },
+    });
+  });
+
+  app.post("/mcp/tools/call", async (req, res) => {
+    const { arguments: args } = req.body.params;
+
+    const result = await tcr.run(args);
+    res.json({
+      id: req.body.id,
+      result,
+    });
+  });
+
+  const port = 3000;
+  app.listen(port, () => {
+    console.log("MC Vibes in the house! Let's break some code down!");
+  });
+
+  process.on("SIGINT", () => {
+    console.log("MC Vibes has left the building! Peace out!");
+    process.exit(0);
+  });
 }
 
-runServer().catch((error) => {
-  console.error("Fatal error running server:", error);
-  process.exit(1);
-});
+runServer();
