@@ -9,24 +9,26 @@ SCRIPT_PATH="$(realpath "$0")"
 PKG_DIR="$(dirname "$SCRIPT_PATH")"
 cd "$PKG_DIR" || exit 1
 
+PORT="${2:-3000}"
+
 case "$1" in
   on)
-    out "MC Vibes in the house! Let's break some code down!"
-    node dist/vibes.js
+    out "MC Vibes in the house! Let's break some code down! [port: $PORT]"
+    node dist/vibes.js "$PORT"
     ;;
   on!)
-    nohup node dist/vibes.js > /tmp/mcvibes.log 2>&1 &
-    out "MC Vibes in the house! Let's break some code down!"
+    nohup node dist/vibes.js "$PORT" > /tmp/mcvibes.log 2>&1 &
+    out "MC Vibes in the house! Let's break some code down! [port: $PORT]"
     ;;
   off)
     pkill -f "node.*dist/vibes.js" || true
     out "MC Vibes has left the building! Peace out!"
     ;;
   *)
-    out "Usage: vibes [on|on!|off]"
-    out "  on  - foreground mode"
-    out "  on! - background mode"
-    out "  off - stop MC Vibes"
+    out "Usage: vibes [on|on!|off] [port]"
+    out "  on  PORT - foreground mode (default port: 3000)"
+    out "  on! PORT - background mode (default port: 3000)"
+    out "  off     - stop MC Vibes"
     exit 1
     ;;
 esac

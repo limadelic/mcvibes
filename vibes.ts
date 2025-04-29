@@ -25,7 +25,7 @@ async function run() {
     res.json({ id, result });
   });
 
-  const port = 3000;
+  const port = process.argv[2] ? parseInt(process.argv[2]) : 3000;
   app.listen(port, () => {});
 
   process.on("SIGINT", () => {
