@@ -12,14 +12,14 @@ cd "$PKG_DIR" || exit 1
 case "$1" in
   on)
     out "MC Vibes in the house! Let's break some code down!"
-    node dist/index.js
+    node dist/vibes.js
     ;;
   on!)
-    nohup node dist/index.js > /tmp/mcvibes.log 2>&1 &
+    nohup node dist/vibes.js > /tmp/mcvibes.log 2>&1 &
     out "MC Vibes in the house! Let's break some code down!"
     ;;
   off)
-    pkill -f "node.*dist/index.js" || true
+    pkill -f "node.*dist/vibes.js" || true
     out "MC Vibes has left the building! Peace out!"
     ;;
   *)

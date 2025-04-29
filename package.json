@@ -1,7 +1,7 @@
 {
   "name": "mcvibes",
   "version": "0.2.8",
-  "description": "Universal TCR (Test && Commit || Revert) tool",
+  "description": "vibe code like a pro",
   "license": "MIT",
   "author": "limadelic",
   "homepage": "https://github.com/limadelic/mcvibes",
@@ -12,8 +12,6 @@
   },
   "type": "module",
   "bin": {
-    "mcvibes": "dist/index.js",
-    "tcr": "dist/index.js",
     "vibes": "vibes"
   },
   "files": [
@@ -23,11 +21,7 @@
   "scripts": {
     "build": "tsc && shx chmod +x dist/*.js",
     "prepare": "npm run build",
-    "watch": "tsc --watch",
-    "start": "node dist/index.js",
-    "vibes:on": "node dist/index.js",
-    "vibes:off": "pkill -f 'node dist/index.js' || true",
-    "pretty": "prettier --write .",
+    "start": "node dist/vibes.js",
     "test": "exit 0",
     "tcr": "./tcr.sh"
   },
@@ -37,8 +31,7 @@
     "@types/express": "^5.0.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "zod-to-json-schema": "^3.23.5"
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^22",

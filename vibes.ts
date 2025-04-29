@@ -5,7 +5,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-async function runServer() {
+async function run() {
   const app = express();
 
   app.use(cors());
@@ -39,4 +39,4 @@ async function runServer() {
   });
 }
 
-runServer();
+run();
