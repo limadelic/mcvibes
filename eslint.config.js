@@ -4,7 +4,11 @@ import js from '@eslint/js';
 export default defineConfig([
   {
     files: ['**/*.js'],
-    ignores: ['**/node_modules/**', '**/dist/**'],
+    ignores: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/docs/**',
+    ],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
