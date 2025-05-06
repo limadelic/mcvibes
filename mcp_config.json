@@ -2,7 +2,10 @@
   "mcpServers": {
     "mcvibes": {
       "command": "escript",
-      "args": ["~/.mix/escripts/mcp-proxy", "http://localhost:3000/sse"]
+      "args": [
+        "~/.mix/escripts/mcp-proxy",
+        "http://localhost:3000/sse"
+      ]
     }
   }
 }

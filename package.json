@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "start": "node vibes.js",
+    "build": "eslint",
     "test": "exit 0",
     "tcr": "./tcr.sh",
     "pretty": "prettier --write ."
@@ -31,6 +32,8 @@
     "express": "^5.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
     "prettier": "^3.5.3"
   }
 }
