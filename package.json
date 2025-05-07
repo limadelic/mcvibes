@@ -20,7 +20,8 @@
   ],
   "scripts": {
     "start": "node vibes.js",
-    "build": "eslint",
+    "build": "mkdir -p dist && cp *.js dist/ && chmod +x dist/*.js",
+    "prepare": "npm run build",
     "test": "exit 0",
     "tcr": "./tcr.sh",
     "pretty": "prettier --write ."

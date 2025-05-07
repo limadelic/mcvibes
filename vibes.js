@@ -7,11 +7,12 @@ import {
   ListToolsRequestSchema,
   CallToolRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
+import pkg from './package.json' with { type: 'json' };
 
 const server = new Server(
   {
-    name: 'mcvibes',
-    version: '1.0.0',
+    name: pkg.name,
+    version: pkg.version,
   },
   {
     capabilities: {
