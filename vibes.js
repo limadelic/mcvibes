@@ -22,30 +22,13 @@ const server = new Server(
 
 server.setRequestHandler(
   ListToolsRequestSchema,
-  async () => {
-    return { tools: [tcr.def] };
-  }
+  async () => ({ tools: [tcr.def] })
 );
 
 server.setRequestHandler(
   CallToolRequestSchema,
-  async (request) => {
-    try {
-      return await tcr.run(
-        request.params.arguments
-      );
-    } catch (error) {
-      return {
-        isError: true,
-        content: [
-          {
-            type: 'text',
-            text: `Error: ${error.message}`,
-          },
-        ],
-      };
-    }
-  }
+  async (request) =>
+    tcr.run(request.params.arguments)
 );
 
 async function runServer() {
