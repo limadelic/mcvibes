@@ -19,10 +19,9 @@
   ],
   "scripts": {
     "start": "node src/vibes.js",
-    "build": "mkdir -p dist && cp src/*.js dist/ && chmod +x dist/*.js",
+    "build": "rsync -a src/ dist/",
     "prepare": "npm run build",
     "test": "exit 0",
-    "tcr": "./tcr.sh",
     "pretty": "prettier --write ."
   },
   "dependencies": {

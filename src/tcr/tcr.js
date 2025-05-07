@@ -1,7 +1,16 @@
+import { spawnSync } from 'child_process';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(
+  fileURLToPath(import.meta.url)
+);
+
 export const schema = {
   type: 'object',
   properties: {
     comment: { type: 'string' },
+    fileCount: { type: 'number' },
   },
   required: ['comment'],
 };
@@ -18,21 +27,20 @@ export const def = {
 };
 
 export const run = async (input) => {
-  if (
-    !input ||
-    typeof input.comment !== 'string'
-  ) {
-    throw new Error(
-      `Invalid arguments for tcr: comment must be a string`
-    );
-  }
+  const tcrPath = join(__dirname, 'node.sh');
+  const args = [tcrPath, input.comment];
 
-  const result =
-    Math.random() > 0.3
-      ? `✅ Tests passed - committed: ${input.comment}`
-      : '❌ Tests failed - changes reverted';
+  input.fileCount &&
+    args.push(input.fileCount.toString());
+
+  const result = spawnSync('bash', args, {
+    encoding: 'utf8',
+    stdio: 'pipe',
+  });
 
   return {
-    content: [{ type: 'text', text: result }],
+    content: [
+      { type: 'text', text: result.stdout },
+    ],
   };
 };
