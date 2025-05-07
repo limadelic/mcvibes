@@ -31,5 +31,9 @@ export const run = async (input) => {
   input.fileCount &&
     args.push(input.fileCount.toString());
 
-  return sh('tcr/node', args);
+  const output = sh('tcr/node', args);
+
+  return {
+    content: [{ type: 'text', text: output }],
+  };
 };

@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # TCR (test && commit || revert) script
+
+# Debug output
+echo "DEBUG: Got args: $@"
 # Usage: tcr <verb>:<description> [exact_file_count]
 # Example: tcr add:user authentication
 # For more than 2 files, pass exact count: tcr <verb>:<description> <exact_file_count>
