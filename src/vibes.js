@@ -7,7 +7,7 @@ import {
   ListToolsRequestSchema,
   CallToolRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import pkg from './package.json' with { type: 'json' };
+import pkg from '../package.json' with { type: 'json' };
 
 const server = new Server(
   {

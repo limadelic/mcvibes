@@ -19,8 +19,8 @@
     "vibes"
   ],
   "scripts": {
-    "start": "node vibes.js",
-    "build": "mkdir -p dist && cp *.js dist/ && chmod +x dist/*.js",
+    "start": "node src/vibes.js",
+    "build": "mkdir -p dist && cp src/*.js dist/ && chmod +x dist/*.js",
     "prepare": "npm run build",
     "test": "exit 0",
     "tcr": "./tcr.sh",
