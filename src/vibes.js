@@ -35,8 +35,6 @@ server.setRequestHandler(
 async function runServer() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('MC Vibes in da houze');
 }
 
-console.error('MC Vibes starting...');
 runServer();
