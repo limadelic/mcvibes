@@ -12,11 +12,10 @@
   },
   "type": "module",
   "bin": {
-    "vibes": "vibes"
+    "vibes": "dist/vibes.js"
   },
   "files": [
-    "dist",
-    "vibes"
+    "dist"
   ],
   "scripts": {
     "start": "node src/vibes.js",
