@@ -1,6 +1,6 @@
-import { spawnSync } from 'child_process';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import sh from '../sh.js';
 
 const __dirname = dirname(
   fileURLToPath(import.meta.url)
@@ -27,20 +27,13 @@ export const def = {
 };
 
 export const run = async (input) => {
-  const tcrPath = join(__dirname, 'node.sh');
-  const args = [tcrPath, input.comment];
-
+  const args = [input.comment];
   input.fileCount &&
     args.push(input.fileCount.toString());
 
-  const result = spawnSync('bash', args, {
-    encoding: 'utf8',
-    stdio: 'pipe',
-  });
+  const output = sh('tcr/node', args);
 
   return {
-    content: [
-      { type: 'text', text: result.stdout },
-    ],
+    content: [{ type: 'text', text: output }],
   };
 };
