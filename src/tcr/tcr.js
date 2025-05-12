@@ -1,6 +1,7 @@
 import sh from '../helpers/sh.js';
 import { bad, errors } from './validate.js';
 import { text } from '../helpers/response.js';
+import { args } from './args.js';
 
 export const schema = {
   type: 'object',
@@ -24,11 +25,7 @@ export const def = {
 export const run = async (input) => {
   if (bad(input)) return text(errors(input));
 
-  const args = [input.comment];
-  input.fileCount &&
-    args.push(input.fileCount.toString());
-
-  const output = sh('tcr/node', args);
+  const output = sh('tcr/node', args(input));
 
   return text(output);
 };
