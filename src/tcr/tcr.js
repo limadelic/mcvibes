@@ -22,10 +22,10 @@ export const def = {
   inputSchema: schema,
 };
 
-export const run = async (input) => {
-  if (bad(input)) return text(errors(input));
+export const run = async (params) => {
+  if (bad(params)) return text(errors(params));
 
-  const output = sh('tcr/node', args(input));
+  const output = sh('tcr/node', args(params));
 
   return text(output);
 };
