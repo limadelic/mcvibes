@@ -1,4 +1,5 @@
 import { checkLimit } from './files.js';
+import { status } from './files.js';
 
 const msg = {
   comment:
@@ -34,7 +35,13 @@ export const errors = {
     const { comment, fileCount } = params;
     const result = checkLimit(fileCount, comment);
     if (result.error)
-      return result.error + '\n' + result.hint;
+      return (
+        status() +
+        '\n\n' +
+        result.error +
+        '\n' +
+        result.hint
+      );
 
     return null;
   },

@@ -7,41 +7,58 @@ const countCommand = (cmd) =>
   ) || 0;
 
 const getChangedFiles = () => {
+  // Get changed but unstaged files
   const changedFiles = execSync(
     'git diff --name-only',
     { encoding: 'utf8' }
   )
     .trim()
-    .split('\\n')
+    .split('\n')
     .filter(Boolean);
+
+  // Get staged files
   const stagedFiles = execSync(
     'git diff --staged --name-only',
     { encoding: 'utf8' }
   )
     .trim()
-    .split('\\n')
+    .split('\n')
     .filter(Boolean);
+
+  // Get new untracked files
   const untrackedFiles = execSync(
     'git ls-files --others --exclude-standard',
     { encoding: 'utf8' }
   )
     .trim()
-    .split('\\n')
+    .split('\n')
+    .filter(Boolean);
+
+  // Get deleted files
+  const deletedFiles = execSync(
+    'git ls-files --deleted',
+    { encoding: 'utf8' }
+  )
+    .trim()
+    .split('\n')
     .filter(Boolean);
 
   return {
     changed: changedFiles,
     staged: stagedFiles,
     untracked: untrackedFiles,
+    deleted: deletedFiles,
     all: [
       ...changedFiles,
       ...stagedFiles,
       ...untrackedFiles,
+      ...deletedFiles,
     ],
     total:
       changedFiles.length +
       stagedFiles.length +
-      untrackedFiles.length,
+      untrackedFiles.length +
+      deletedFiles.length,
   };
 };
 
@@ -65,16 +82,23 @@ export const checkLimit = (
 export const status = () => {
   const files = getChangedFiles();
 
-  let output = 'Files changed:\\n\\n';
-  output += [
+  const changedFiles = [
     ...files.changed,
     ...files.staged,
-  ].join('\\n');
+  ];
+  const fileList = changedFiles.join('\n');
 
-  if (files.untracked.length > 0) {
-    output += '\\nNew files:\\n';
-    output += files.untracked.join('\\n');
-  }
+  const newFiles =
+    files.untracked.length > 0
+      ? '\nNew files:\n' +
+        files.untracked.join('\n')
+      : '';
 
-  return output;
+  const deletedFiles =
+    files.deleted.length > 0
+      ? '\nDeleted files:\n' +
+        files.deleted.join('\n')
+      : '';
+
+  return `Files changed:\n\n${fileList}${newFiles}${deletedFiles}`;
 };

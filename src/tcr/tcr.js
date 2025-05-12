@@ -3,6 +3,7 @@ import { valid, errors } from './validation.js';
 import { text } from '../helpers/response.js';
 import { args } from './args.js';
 import { status } from './files.js';
+import { format } from './format.js';
 
 export const schema = {
   type: 'object',
@@ -27,7 +28,7 @@ export const run = async (params) => {
   if (!valid.args(params))
     return text(errors.args(params));
 
-  sh('tcr/node/format');
+  format();
 
   if (!valid.files(params))
     return text(errors.files(params));
