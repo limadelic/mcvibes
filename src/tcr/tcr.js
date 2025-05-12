@@ -1,6 +1,8 @@
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import sh from '../sh.js';
+import { bad, errors } from './validate.js';
+import { text } from '../response.js';
 
 const __dirname = dirname(
   fileURLToPath(import.meta.url)
@@ -21,43 +23,18 @@ export const def = {
     'Run TCR (Test && Commit || Revert) on a project. ' +
     'Provide a commit message as the comment parameter. ' +
     'Automatically detects project type and runs appropriate tests. ' +
-    'If tests pass, changes are committed. If tests fail, changes are reverted. ' +
-    'Works with any project type without configuration.',
+    'If tests pass, changes are committed. If tests fail, changes are reverted. Works with any project type without configuration.',
   inputSchema: schema,
 };
 
 export const run = async (input) => {
-  const comment = input.comment;
+  if (bad(input)) return text(errors(input));
 
-  if (!comment) {
-    return {
-      content: [
-        {
-          type: 'text',
-          text: '❌ Error: Commit message required in format verb:description\nExample: add:user authentication',
-        },
-      ],
-    };
-  }
-
-  if (!/^[a-z]+:.+/.test(comment)) {
-    return {
-      content: [
-        {
-          type: 'text',
-          text: '❌ Error: Message must be in format verb:description\nExample: add:user authentication',
-        },
-      ],
-    };
-  }
-
-  const args = [comment];
+  const args = [input.comment];
   input.fileCount &&
     args.push(input.fileCount.toString());
 
   const output = sh('tcr/node', args);
 
-  return {
-    content: [{ type: 'text', text: output }],
-  };
+  return text(output);
 };
