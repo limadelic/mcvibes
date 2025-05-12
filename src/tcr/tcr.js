@@ -2,6 +2,10 @@ import sh from '../helpers/sh.js';
 import { bad, errors } from './validate.js';
 import { text } from '../helpers/response.js';
 import { args } from './args.js';
+import {
+  checkLimit,
+  fileStatus,
+} from './files.js';
 
 export const schema = {
   type: 'object',
@@ -26,7 +30,19 @@ export const run = async (params) => {
   if (bad(params)) return text(errors(params));
 
   sh('tcr/node/format');
-  const output = sh('tcr/node/tcr', args(params));
 
-  return text(output);
+  const { comment, fileCount } = params;
+  const result = checkLimit(fileCount, comment);
+  if (result.error)
+    return text(
+      result.error + '\n' + result.hint
+    );
+
+  const status = fileStatus();
+  const output = sh(
+    'tcr/node/test',
+    args(params)
+  );
+
+  return text(status + output);
 };
