@@ -1,12 +1,6 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-import sh from '../sh.js';
+import sh from '../helpers/sh.js';
 import { bad, errors } from './validate.js';
-import { text } from '../response.js';
-
-const __dirname = dirname(
-  fileURLToPath(import.meta.url)
-);
+import { text } from '../helpers/response.js';
 
 export const schema = {
   type: 'object',
