@@ -1,5 +1,5 @@
 import sh from '../helpers/sh.js';
-import { bad, errors } from './validate.js';
+import { valid, errors } from './validation.js';
 import { text } from '../helpers/response.js';
 import { args } from './args.js';
 import {
@@ -27,7 +27,8 @@ export const def = {
 };
 
 export const run = async (params) => {
-  if (bad(params)) return text(errors(params));
+  if (!valid.args(params))
+    return text(errors.args(params));
 
   sh('tcr/node/format');
 
