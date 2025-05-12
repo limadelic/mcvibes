@@ -25,6 +25,7 @@ export const def = {
 export const run = async (params) => {
   if (bad(params)) return text(errors(params));
 
+  sh('tcr/node/format');
   const output = sh('tcr/node/tcr', args(params));
 
   return text(output);

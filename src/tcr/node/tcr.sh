@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Run prettier formatting first
-echo "Running prettier..."
-echo ""
-npm run pretty > /dev/null 2>&1
-
 # Check number of files changed
 CHANGED_FILES=$(git diff --name-only | wc -l)
 CHANGED_FILES_STAGED=$(git diff --staged --name-only | wc -l)
