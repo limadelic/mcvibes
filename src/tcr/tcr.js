@@ -2,7 +2,7 @@ import sh from '../helpers/sh.js';
 import { valid, errors } from './validation.js';
 import { text } from '../helpers/response.js';
 import { args } from './args.js';
-import { fileStatus } from './files.js';
+import { status } from './files.js';
 
 export const schema = {
   type: 'object',
@@ -32,11 +32,7 @@ export const run = async (params) => {
   if (!valid.files(params))
     return text(errors.files(params));
 
-  const status = fileStatus();
-  const output = sh(
-    'tcr/node/test',
-    args(params)
+  return text(
+    status() + sh('tcr/node/test', args(params))
   );
-
-  return text(status + output);
 };

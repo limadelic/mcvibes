@@ -62,7 +62,7 @@ export const checkLimit = (
   return { files };
 };
 
-export const fileStatus = () => {
+export const status = () => {
   const files = getChangedFiles();
 
   let output = 'Files changed:\\n\\n';
