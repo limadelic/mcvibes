@@ -1,5 +1,5 @@
 import sh from '../helpers/sh.js';
-import { valid, errors } from './validation.js';
+import { valid, error } from './validation.js';
 import { text } from '../helpers/response.js';
 import { args } from './args.js';
 import { status } from './files.js';
@@ -25,13 +25,9 @@ export const def = {
 };
 
 export const run = async (params) => {
-  if (!valid.args(params))
-    return text(errors.args(params));
+  if (!valid(params)) return text(error(params));
 
   format();
-
-  if (!valid.files(params))
-    return text(errors.files(params));
 
   return text(
     status() + sh('tcr/node/test', args(params))

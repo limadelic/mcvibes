@@ -6,43 +6,49 @@ const msg = {
     'in format verb:description\nExample: add:user authentication',
 };
 
-export const valid = {
-  args: (params) => {
-    const { comment } = params;
-    return comment && /^[a-z]+:.+/.test(comment);
-  },
-
-  files: (params) => {
-    const { comment, fileCount } = params;
-    const result = checkLimit(fileCount, comment);
-    return !result.error;
-  },
+const validArgs = (params) => {
+  const { comment } = params;
+  return comment && /^[a-z]+:.+/.test(comment);
 };
 
-export const errors = {
-  args: (params) => {
-    const { comment } = params;
-    if (!comment)
-      return `❌ Error: Commit message required ${msg.comment}`;
+const validFiles = (params) => {
+  const { comment, fileCount } = params;
+  const result = checkLimit(fileCount, comment);
+  return !result.error;
+};
 
-    if (!/^[a-z]+:.+/.test(comment))
-      return `❌ Error: Message must be ${msg.comment}`;
+export const valid = (params) =>
+  validArgs(params) && validFiles(params);
 
-    return null;
-  },
+const errorArgs = (params) => {
+  const { comment } = params;
+  if (!comment)
+    return `❌ Error: Commit message required ${msg.comment}`;
 
-  files: (params) => {
-    const { comment, fileCount } = params;
-    const result = checkLimit(fileCount, comment);
-    if (result.error)
-      return (
-        status() +
-        '\n\n' +
-        result.error +
-        '\n' +
-        result.hint
-      );
+  if (!/^[a-z]+:.+/.test(comment))
+    return `❌ Error: Message must be ${msg.comment}`;
 
-    return null;
-  },
+  return null;
+};
+
+const errorFiles = (params) => {
+  const { comment, fileCount } = params;
+  const result = checkLimit(fileCount, comment);
+  if (result.error)
+    return (
+      status() +
+      '\n\n' +
+      result.error +
+      '\n' +
+      result.hint
+    );
+
+  return null;
+};
+
+export const error = (params) => {
+  const argError = errorArgs(params);
+  if (argError) return argError;
+
+  return errorFiles(params);
 };
