@@ -32,9 +32,9 @@ server.setRequestHandler(
     tcr.run(request.params.arguments)
 );
 
-async function runServer() {
+async function run() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
 
-runServer();
+run();

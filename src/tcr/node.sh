@@ -6,17 +6,7 @@
 # Example: tcr add:user authentication
 # For more than 2 files, pass exact count: tcr <verb>:<description> <exact_file_count>
 
-if [ -z "$1" ]; then
-    echo "❌ Error: Commit message required in format verb:description"
-    echo "Example: tcr add:user authentication"
-    exit 1
-fi
-
-if [[ ! "$1" =~ ^[a-z]+:.+ ]]; then
-    echo "❌ Error: Message must be in format verb:description"
-    echo "Example: tcr add:user authentication"
-    exit 1
-fi
+# Validation now handled in tcr.js
 
 # Run prettier formatting first
 echo "Running prettier..."

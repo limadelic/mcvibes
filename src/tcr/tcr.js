@@ -27,7 +27,31 @@ export const def = {
 };
 
 export const run = async (input) => {
-  const args = [input.comment];
+  const comment = input.comment;
+
+  if (!comment) {
+    return {
+      content: [
+        {
+          type: 'text',
+          text: '❌ Error: Commit message required in format verb:description\nExample: add:user authentication',
+        },
+      ],
+    };
+  }
+
+  if (!/^[a-z]+:.+/.test(comment)) {
+    return {
+      content: [
+        {
+          type: 'text',
+          text: '❌ Error: Message must be in format verb:description\nExample: add:user authentication',
+        },
+      ],
+    };
+  }
+
+  const args = [comment];
   input.fileCount &&
     args.push(input.fileCount.toString());
 
