@@ -9,7 +9,7 @@ const __dirname = dirname(
 export default (script, args = []) =>
   spawnSync(
     'bash',
-    [join(__dirname, `${script}.sh`), ...args],
+    [join(__dirname, `../${script}.sh`), ...args],
     {
       encoding: 'utf8',
       stdio: 'pipe',
