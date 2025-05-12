@@ -3,10 +3,13 @@ const msg = {
     'in format verb:description\nExample: add:user authentication',
 };
 
-export const bad = ({ comment }) =>
-  !comment || !/^[a-z]+:.+/.test(comment);
+export const bad = (params) => {
+  const { comment } = params;
+  return !comment || !/^[a-z]+:.+/.test(comment);
+};
 
-export const errors = ({ comment }) => {
+export const errors = (params) => {
+  const { comment } = params;
   if (!comment)
     return `❌ Error: Commit message required ${msg.comment}`;
 
