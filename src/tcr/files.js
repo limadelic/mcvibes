@@ -1,45 +1,31 @@
 import cmd from '../helpers/cmd.js';
 
-const countCommand = (command) =>
-  parseInt(cmd(command)[0] || '0', 10);
-
-const getChangedFiles = () => {
-  // Get changed but unstaged files
-  const changedFiles = cmd(
-    'git diff --name-only'
-  );
-
-  // Get staged files
-  const stagedFiles = cmd(
+const changes = () => {
+  const changed = cmd('git diff --name-only');
+  const staged = cmd(
     'git diff --staged --name-only'
   );
-
-  // Get new untracked files
-  const untrackedFiles = cmd(
+  const untracked = cmd(
     'git ls-files --others --exclude-standard'
   );
-
-  // Get deleted files
-  const deletedFiles = cmd(
-    'git ls-files --deleted'
-  );
+  const deleted = cmd('git ls-files --deleted');
 
   return {
-    changed: changedFiles,
-    staged: stagedFiles,
-    untracked: untrackedFiles,
-    deleted: deletedFiles,
+    changed,
+    staged,
+    untracked,
+    deleted,
     all: [
-      ...changedFiles,
-      ...stagedFiles,
-      ...untrackedFiles,
-      ...deletedFiles,
+      ...changed,
+      ...staged,
+      ...untracked,
+      ...deleted,
     ],
     total:
-      changedFiles.length +
-      stagedFiles.length +
-      untrackedFiles.length +
-      deletedFiles.length,
+      changed.length +
+      staged.length +
+      untracked.length +
+      deleted.length,
   };
 };
 
@@ -47,7 +33,7 @@ export const checkLimit = (
   fileCount,
   comment
 ) => {
-  const files = getChangedFiles();
+  const files = changes();
   const { total } = files;
 
   if (total > 2 && fileCount != total) {
@@ -61,13 +47,12 @@ export const checkLimit = (
 };
 
 export const status = () => {
-  const files = getChangedFiles();
+  const files = changes();
 
-  const changedFiles = [
+  const list = [
     ...files.changed,
     ...files.staged,
-  ];
-  const fileList = changedFiles.join('\n');
+  ].join('\n');
 
   const newFiles =
     files.untracked.length > 0
@@ -75,11 +60,11 @@ export const status = () => {
         files.untracked.join('\n')
       : '';
 
-  const deletedFiles =
+  const deleted =
     files.deleted.length > 0
       ? '\nDeleted files:\n' +
         files.deleted.join('\n')
       : '';
 
-  return `Files changed:\n\n${fileList}${newFiles}${deletedFiles}`;
+  return `Files changed:\n\n${list}${newFiles}${deleted}`;
 };
