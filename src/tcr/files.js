@@ -54,7 +54,7 @@ export const status = () => {
     ...files.staged,
   ].join('\n');
 
-  const newFiles =
+  const untracked =
     files.untracked.length > 0
       ? '\nNew files:\n' +
         files.untracked.join('\n')
@@ -66,5 +66,5 @@ export const status = () => {
         files.deleted.join('\n')
       : '';
 
-  return `Files changed:\n\n${list}${newFiles}${deleted}`;
+  return `Files changed:\n\n${list}${untracked}${deleted}`;
 };
