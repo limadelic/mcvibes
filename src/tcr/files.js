@@ -49,4 +49,4 @@ const removed = () =>
     : '';
 
 export const status = () =>
-  `\nFiles changed:\n\n${list()}${added()}${removed()}\n\n`;
+  `\nFiles changed:\n\n${list()}${added()}${removed()}\n`;
