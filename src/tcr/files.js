@@ -4,6 +4,7 @@ import {
   untracked,
   deleted,
 } from '../helpers/git.js';
+import _ from 'lodash';
 
 export const changes = {
   changed: changed(),
@@ -16,11 +17,9 @@ export const checkLimit = (
   fileCount,
   comment
 ) => {
-  const total =
-    changes.changed.length +
-    changes.staged.length +
-    changes.untracked.length +
-    changes.deleted.length;
+  const total = _.sum(
+    _.map(changes, (x) => x.length)
+  );
 
   if (total > 2 && fileCount != total)
     return {
