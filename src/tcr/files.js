@@ -13,40 +13,40 @@ export const changes = {
   deleted: deleted(),
 };
 
+const total = (x) =>
+  _.sum(_.map(x, (arr) => arr.length));
+
 export const checkLimit = (
   fileCount,
   comment
 ) => {
-  const total = _.sum(
-    _.map(changes, (x) => x.length)
-  );
+  const totalFiles = total(changes);
 
-  if (total > 2 && fileCount != total)
+  if (totalFiles > 2 && fileCount != totalFiles)
     return {
-      error: `❌ Error: Too many files changed (${total}). Maximum allowed: 2`,
-      hint: `To continue, run: npm run tcr "${comment}" ${total}`,
+      error: `❌ Error: Too many files changed (${totalFiles}). Maximum allowed: 2`,
+      hint: `To continue, run: npm run tcr "${comment}" ${totalFiles}`,
     };
 
   return { files: changes };
 };
 
-export const status = () => {
-  const list = [
-    ...changes.changed,
-    ...changes.staged,
-  ].join('\n');
+const list = () =>
+  [...changes.changed, ...changes.staged].join(
+    '\n'
+  );
 
-  const untracked =
-    changes.untracked.length > 0
-      ? '\nNew files:\n' +
-        changes.untracked.join('\n')
-      : '';
+const added = () =>
+  changes.untracked.length > 0
+    ? '\nNew files:\n' +
+      changes.untracked.join('\n')
+    : '';
 
-  const deleted =
-    changes.deleted.length > 0
-      ? '\nDeleted files:\n' +
-        changes.deleted.join('\n')
-      : '';
+const removed = () =>
+  changes.deleted.length > 0
+    ? '\nDeleted files:\n' +
+      changes.deleted.join('\n')
+    : '';
 
-  return `Files changed:\n\n${list}${untracked}${deleted}`;
-};
+export const status = () =>
+  `Files changed:\n\n${list()}${added()}${removed()}`;
