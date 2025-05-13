@@ -1,47 +1,28 @@
-import { execSync } from 'child_process';
+import cmd from '../helpers/cmd.js';
 
-const countCommand = (cmd) =>
-  parseInt(
-    execSync(cmd, { encoding: 'utf8' }).trim(),
-    10
-  ) || 0;
+const countCommand = (command) =>
+  parseInt(cmd(command)[0] || '0', 10);
 
 const getChangedFiles = () => {
   // Get changed but unstaged files
-  const changedFiles = execSync(
-    'git diff --name-only',
-    { encoding: 'utf8' }
-  )
-    .trim()
-    .split('\n')
-    .filter(Boolean);
+  const changedFiles = cmd(
+    'git diff --name-only'
+  );
 
   // Get staged files
-  const stagedFiles = execSync(
-    'git diff --staged --name-only',
-    { encoding: 'utf8' }
-  )
-    .trim()
-    .split('\n')
-    .filter(Boolean);
+  const stagedFiles = cmd(
+    'git diff --staged --name-only'
+  );
 
   // Get new untracked files
-  const untrackedFiles = execSync(
-    'git ls-files --others --exclude-standard',
-    { encoding: 'utf8' }
-  )
-    .trim()
-    .split('\n')
-    .filter(Boolean);
+  const untrackedFiles = cmd(
+    'git ls-files --others --exclude-standard'
+  );
 
   // Get deleted files
-  const deletedFiles = execSync(
-    'git ls-files --deleted',
-    { encoding: 'utf8' }
-  )
-    .trim()
-    .split('\n')
-    .filter(Boolean);
+  const deletedFiles = cmd(
+    'git ls-files --deleted'
+  );
 
   return {
     changed: changedFiles,

@@ -1,7 +1,3 @@
-import { execSync } from 'child_process';
+import cmd from '../helpers/cmd.js';
 
-export const format = () =>
-  execSync('npm run pretty', {
-    encoding: 'utf8',
-    stdio: ['pipe', 'pipe', 'ignore'],
-  });
+export const format = () => cmd('npm run pretty');
