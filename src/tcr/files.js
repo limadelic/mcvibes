@@ -1,65 +1,52 @@
-import git from '../helpers/git.js';
+import {
+  changed,
+  staged,
+  untracked,
+  deleted,
+} from '../helpers/git.js';
 
-const changes = () => {
-  const changed = git.changed();
-  const staged = git.staged();
-  const untracked = git.untracked();
-  const deleted = git.deleted();
-
-  return {
-    changed,
-    staged,
-    untracked,
-    deleted,
-    all: [
-      ...changed,
-      ...staged,
-      ...untracked,
-      ...deleted,
-    ],
-    total:
-      changed.length +
-      staged.length +
-      untracked.length +
-      deleted.length,
-  };
+export const changes = {
+  changed: changed(),
+  staged: staged(),
+  untracked: untracked(),
+  deleted: deleted(),
 };
 
 export const checkLimit = (
   fileCount,
   comment
 ) => {
-  const files = changes();
-  const { total } = files;
+  const total =
+    changes.changed.length +
+    changes.staged.length +
+    changes.untracked.length +
+    changes.deleted.length;
 
-  if (total > 2 && fileCount != total) {
+  if (total > 2 && fileCount != total)
     return {
       error: `❌ Error: Too many files changed (${total}). Maximum allowed: 2`,
       hint: `To continue, run: npm run tcr "${comment}" ${total}`,
     };
-  }
 
-  return { files };
+  return { files: changes };
 };
 
 export const status = () => {
-  const files = changes();
-
   const list = [
-    ...files.changed,
-    ...files.staged,
+    ...changes.changed,
+    ...changes.staged,
   ].join('\n');
 
   const untracked =
-    files.untracked.length > 0
+    changes.untracked.length > 0
       ? '\nNew files:\n' +
-        files.untracked.join('\n')
+        changes.untracked.join('\n')
       : '';
 
   const deleted =
-    files.deleted.length > 0
+    changes.deleted.length > 0
       ? '\nDeleted files:\n' +
-        files.deleted.join('\n')
+        changes.deleted.join('\n')
       : '';
 
   return `Files changed:\n\n${list}${untracked}${deleted}`;
