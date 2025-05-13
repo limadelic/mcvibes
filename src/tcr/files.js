@@ -4,31 +4,12 @@ import {
   untracked,
   deleted,
 } from '../helpers/git.js';
-import _ from 'lodash';
 
 export const changes = {
   changed: changed(),
   staged: staged(),
   untracked: untracked(),
   deleted: deleted(),
-};
-
-const total = (x) =>
-  _.sum(_.map(x, (arr) => arr.length));
-
-export const checkLimit = (
-  fileCount,
-  comment
-) => {
-  const totalFiles = total(changes);
-
-  if (totalFiles > 2 && fileCount != totalFiles)
-    return {
-      error: `❌ Error: Too many files changed (${totalFiles}). Maximum allowed: 2`,
-      hint: `To continue, run: npm run tcr "${comment}" ${totalFiles}`,
-    };
-
-  return { files: changes };
 };
 
 const list = () =>

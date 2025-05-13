@@ -1,5 +1,6 @@
-import { checkLimit } from './files.js';
 import { status } from './files.js';
+import { changes } from './files.js';
+import _ from 'lodash';
 
 const msg = {
   comment:
@@ -9,6 +10,21 @@ const msg = {
 const validArgs = (params) => {
   const { comment } = params;
   return comment && /^[a-z]+:.+/.test(comment);
+};
+
+const total = (x) =>
+  _.sum(_.map(x, (arr) => arr.length));
+
+const checkLimit = (fileCount, comment) => {
+  const totalFiles = total(changes);
+
+  if (totalFiles > 2 && fileCount != totalFiles)
+    return {
+      error: `❌ Error: Too many files changed (${totalFiles}). Maximum allowed: 2`,
+      hint: `To continue, run: npm run tcr "${comment}" ${totalFiles}`,
+    };
+
+  return { files: changes };
 };
 
 const validFiles = (params) => {
