@@ -1,14 +1,10 @@
-import cmd from '../helpers/cmd.js';
+import git from '../helpers/git.js';
 
 const changes = () => {
-  const changed = cmd('git diff --name-only');
-  const staged = cmd(
-    'git diff --staged --name-only'
-  );
-  const untracked = cmd(
-    'git ls-files --others --exclude-standard'
-  );
-  const deleted = cmd('git ls-files --deleted');
+  const changed = git.changed();
+  const staged = git.staged();
+  const untracked = git.untracked();
+  const deleted = git.deleted();
 
   return {
     changed,
