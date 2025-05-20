@@ -1,5 +1,4 @@
-import { status } from './files.js';
-import { changes } from './files.js';
+import { status, changes } from './files.js';
 import _ from 'lodash';
 
 const msg = {
