@@ -30,18 +30,11 @@ const errorArgs = (params) => {
   return null;
 };
 
-const errorFiles = (params) => {
-  const { comment, fileCount } = params;
-  const result = checkLimit(fileCount, comment);
-
-  if (result.error)
-    return (
-      status() +
-      `\n\n❌ Error: Too many files changed (${result.totalFiles}). Maximum allowed: 2\nTo continue, run: npm run tcr "${comment}" ${result.totalFiles}`
-    );
-
-  return null;
-};
+const errorFiles = ({ comment, fileCount }) =>
+  !validFiles({ fileCount })
+    ? status() +
+      `\n\n❌ Error: Too many files changed (${total()}). Maximum allowed: 2\nTo continue, run: npm run tcr "${comment}" ${total()}`
+    : null;
 
 export const error = (params) =>
   errorArgs(params) || errorFiles(params);
