@@ -5,7 +5,7 @@ import {
   deleted,
 } from '../helpers/git.js';
 
-export const changes = () => ({
+const changes = () => ({
   changed: changed(),
   staged: staged(),
   untracked: untracked(),
