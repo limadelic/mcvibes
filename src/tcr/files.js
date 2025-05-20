@@ -12,24 +12,19 @@ export const changes = () => ({
   deleted: deleted(),
 });
 
-const list = () => {
-  const { changed, staged } = changes();
-  return [...changed, ...staged].join('\n');
-};
+const list = () =>
+  [...changed(), ...staged()].join('\n');
 
-const added = () => {
-  const { untracked } = changes();
-  return untracked.length > 0
-    ? '\nNew files:\n' + untracked.join('\n')
+const section = (title, files) =>
+  files.length > 0
+    ? `\n${title}:\n${files.join('\n')}`
     : '';
-};
 
-const removed = () => {
-  const { deleted } = changes();
-  return deleted.length > 0
-    ? '\nDeleted files:\n' + deleted.join('\n')
-    : '';
-};
+const added = () =>
+  section('New files', untracked());
+
+const removed = () =>
+  section('Deleted files', deleted());
 
 export const status = () =>
   `\nFiles changed:\n\n${list()}${added()}${removed()}\n`;
