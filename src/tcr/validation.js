@@ -8,33 +8,28 @@ const msg = {
 const validArgs = ({ comment }) =>
   comment && /^[a-z]+:.+/.test(comment);
 
-const checkLimit = (fileCount, comment) =>
-  total() > 2 && fileCount != total()
-    ? { error: true, totalFiles: total() }
-    : { files: true };
-
 const validFiles = ({ fileCount }) =>
   total() <= 2 || fileCount == total();
 
 export const valid = (params) =>
   validArgs(params) && validFiles(params);
 
-const errorArgs = (params) => {
-  const { comment } = params;
-  if (!comment)
-    return `❌ Error: Commit message required ${msg.comment}`;
+const errorArgs = ({ comment }) => {
+  if (validArgs({ comment })) return null;
 
-  if (!/^[a-z]+:.+/.test(comment))
-    return `❌ Error: Message must be ${msg.comment}`;
-
-  return null;
+  return !comment
+    ? `❌ Error: Commit message required ${msg.comment}`
+    : `❌ Error: Message must be ${msg.comment}`;
 };
 
-const errorFiles = ({ comment, fileCount }) =>
-  !validFiles({ fileCount })
-    ? status() +
-      `\n\n❌ Error: Too many files changed (${total()}). Maximum allowed: 2\nTo continue, run: npm run tcr "${comment}" ${total()}`
-    : null;
+const errorFiles = ({ comment, fileCount }) => {
+  if (validFiles({ fileCount })) return null;
+
+  return (
+    status() +
+    `\n\n❌ Error: Too many files changed (${total()}). Maximum allowed: 2\nTo continue, run: npm run tcr "${comment}" ${total()}`
+  );
+};
 
 export const error = (params) =>
   errorArgs(params) || errorFiles(params);
