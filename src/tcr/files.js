@@ -26,5 +26,13 @@ const added = () =>
 const removed = () =>
   section('Deleted files', deleted());
 
+export const total = () => {
+  const files = changes();
+  return Object.values(files).reduce(
+    (sum, arr) => sum + arr.length,
+    0
+  );
+};
+
 export const status = () =>
   `\nFiles changed:\n\n${list()}${added()}${removed()}\n`;

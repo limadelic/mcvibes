@@ -1,36 +1,27 @@
-import { status, changes } from './files.js';
-import _ from 'lodash';
+import { status, total } from './files.js';
 
 const msg = {
   comment:
     'in format verb:description\nExample: add:user authentication',
 };
 
-const validArgs = (params) => {
-  const { comment } = params;
-  return comment && /^[a-z]+:.+/.test(comment);
-};
-
-const total = (x) =>
-  _.sum(_.map(x, (arr) => arr.length));
+const validArgs = ({ comment }) =>
+  comment && /^[a-z]+:.+/.test(comment);
 
 const checkLimit = (fileCount, comment) => {
-  const files = changes();
-  const totalFiles = total(files);
+  const totalFiles = total();
 
   if (totalFiles > 2 && fileCount != totalFiles)
-    return {
-      error: `❌ Error: Too many files changed (${totalFiles}). Maximum allowed: 2`,
-      hint: `To continue, run: npm run tcr "${comment}" ${totalFiles}`,
-    };
+    return { error: true, totalFiles };
 
   return { files };
 };
 
-const validFiles = (params) => {
-  const { comment, fileCount } = params;
-  const result = checkLimit(fileCount, comment);
-  return !result.error;
+const validFiles = ({ fileCount }) => {
+  const totalFiles = total();
+  return !(
+    totalFiles > 2 && fileCount != totalFiles
+  );
 };
 
 export const valid = (params) =>
@@ -50,21 +41,15 @@ const errorArgs = (params) => {
 const errorFiles = (params) => {
   const { comment, fileCount } = params;
   const result = checkLimit(fileCount, comment);
+
   if (result.error)
     return (
       status() +
-      '\n\n' +
-      result.error +
-      '\n' +
-      result.hint
+      `\n\n❌ Error: Too many files changed (${result.totalFiles}). Maximum allowed: 2\nTo continue, run: npm run tcr "${comment}" ${result.totalFiles}`
     );
 
   return null;
 };
 
-export const error = (params) => {
-  const argError = errorArgs(params);
-  if (argError) return argError;
-
-  return errorFiles(params);
-};
+export const error = (params) =>
+  errorArgs(params) || errorFiles(params);
