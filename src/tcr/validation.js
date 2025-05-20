@@ -16,7 +16,8 @@ const total = (x) =>
   _.sum(_.map(x, (arr) => arr.length));
 
 const checkLimit = (fileCount, comment) => {
-  const totalFiles = total(changes);
+  const files = changes();
+  const totalFiles = total(files);
 
   if (totalFiles > 2 && fileCount != totalFiles)
     return {
@@ -24,7 +25,7 @@ const checkLimit = (fileCount, comment) => {
       hint: `To continue, run: npm run tcr "${comment}" ${totalFiles}`,
     };
 
-  return { files: changes };
+  return { files };
 };
 
 const validFiles = (params) => {
