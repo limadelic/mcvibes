@@ -8,21 +8,13 @@ const msg = {
 const validArgs = ({ comment }) =>
   comment && /^[a-z]+:.+/.test(comment);
 
-const checkLimit = (fileCount, comment) => {
-  const totalFiles = total();
+const checkLimit = (fileCount, comment) =>
+  total() > 2 && fileCount != total()
+    ? { error: true, totalFiles: total() }
+    : { files: true };
 
-  if (totalFiles > 2 && fileCount != totalFiles)
-    return { error: true, totalFiles };
-
-  return { files };
-};
-
-const validFiles = ({ fileCount }) => {
-  const totalFiles = total();
-  return !(
-    totalFiles > 2 && fileCount != totalFiles
-  );
-};
+const validFiles = ({ fileCount }) =>
+  total() <= 2 || fileCount == total();
 
 export const valid = (params) =>
   validArgs(params) && validFiles(params);
