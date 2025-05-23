@@ -9,7 +9,8 @@ const validArgs = ({ comment }) =>
   comment && /^[a-z]+:.+/.test(comment);
 
 const validFiles = ({ fileCount }) =>
-  total() <= 2 || fileCount == total();
+  total() > 0 &&
+  (total() <= 2 || fileCount == total());
 
 export const valid = (params) =>
   validArgs(params) && validFiles(params);
@@ -24,6 +25,8 @@ const errorArgs = ({ comment }) => {
 
 const errorFiles = ({ comment, fileCount }) => {
   if (validFiles({ fileCount })) return null;
+
+  if (total() === 0) return `📋 No files changed`;
 
   return (
     status() +
