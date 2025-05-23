@@ -8,6 +8,7 @@ import {
   CallToolRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import pkg from '../package.json' with { type: 'json' };
+import { text } from './helpers/response.js';
 
 const server = new Server(
   {
@@ -29,7 +30,7 @@ server.setRequestHandler(
 server.setRequestHandler(
   CallToolRequestSchema,
   async (request) =>
-    tcr.run(request.params.arguments)
+    text(await tcr.run(request.params.arguments))
 );
 
 async function run() {

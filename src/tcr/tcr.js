@@ -1,7 +1,6 @@
 import npm from '../helpers/npm.js';
 import git from '../helpers/git.js';
 import { valid, error } from './validation.js';
-import { text } from '../helpers/response.js';
 import { status } from './files.js';
 import { format } from './format.js';
 
@@ -42,9 +41,9 @@ const tcr = ({ comment }) =>
   (test() && commit(comment)) || revert();
 
 export const run = async (params) => {
-  if (!valid(params)) return text(error(params));
+  if (!valid(params)) return error(params);
 
   format();
 
-  return text(status() + tcr(params));
+  return status() + tcr(params);
 };
