@@ -12,8 +12,11 @@ const files = () => [
 
 export const total = () => files().length;
 
-export const status = () => `
+export const status = () =>
+  total() > 0 &&
+  `
 Files changed:
 
 ${files().join('\n')}
+
 `;
