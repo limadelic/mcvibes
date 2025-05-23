@@ -2,7 +2,6 @@ import {
   changed,
   staged,
   untracked,
-  deleted,
 } from '../helpers/git.js';
 
 const list = () =>
@@ -16,14 +15,14 @@ const section = (title, files) =>
 const added = () =>
   section('New files', untracked());
 
-const removed = () =>
-  section('Deleted files', deleted());
-
 export const total = () =>
   changed().length +
   staged().length +
-  untracked().length +
-  deleted().length;
+  untracked().length;
 
 export const status = () =>
-  `\nFiles changed:\n\n${list()}${added()}${removed()}\n`;
+  `
+Files changed:
+${list()}
+${added()}
+`;
