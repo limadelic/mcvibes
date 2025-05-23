@@ -4,15 +4,16 @@ import {
   untracked,
 } from '../helpers/git.js';
 
-export const total = () =>
-  changed().length +
-  staged().length +
-  untracked().length;
+const files = () => [
+  ...changed(),
+  ...staged(),
+  ...untracked(),
+];
+
+export const total = () => files().length;
 
 export const status = () => `
 Files changed:
 
-${changed().join('\n')}
-${staged().join('\n')}
-${untracked().join(' (*)\n')}
+${files().join('\n')}
 `;
