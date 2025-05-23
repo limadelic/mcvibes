@@ -5,7 +5,10 @@ import {
 } from '../helpers/git.js';
 
 const list = () =>
-  [...changed(), ...staged()].join('\n');
+  section('Files changed:', [
+    ...changed(),
+    ...staged(),
+  ]);
 
 const section = (title, files) =>
   files.length > 0
@@ -22,7 +25,5 @@ export const total = () =>
 
 export const status = () =>
   `
-Files changed:
-${list()}
-${added()}
+${list()}${added()}
 `;
