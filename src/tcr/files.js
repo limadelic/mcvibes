@@ -12,9 +12,7 @@ const files = () => [
 
 export const total = () => files().length;
 
-export const status = () =>
-  total() > 0 &&
-  `
+export const status = () => `
 Files changed:
 
 ${files().join('\n')}
