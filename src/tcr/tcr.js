@@ -1,5 +1,5 @@
-import npm from '../helpers/npm.js';
 import git from '../helpers/git.js';
+import test from './test.js';
 import { valid, error } from './validation.js';
 import { status } from './files.js';
 import { format } from './format.js';
@@ -22,8 +22,6 @@ export const def = {
     'If tests pass, changes are committed. If tests fail, changes are reverted. Works with any project type without configuration.',
   inputSchema: schema,
 };
-
-const test = () => npm.test().length === 0;
 
 const commit = (comment) => {
   git.add();
