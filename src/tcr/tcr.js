@@ -1,7 +1,7 @@
-import sh from '../helpers/sh.js';
+import npm from '../helpers/npm.js';
+import git from '../helpers/git.js';
 import { valid, error } from './validation.js';
 import { text } from '../helpers/response.js';
-import { args } from './args.js';
 import { status } from './files.js';
 import { format } from './format.js';
 
@@ -24,12 +24,27 @@ export const def = {
   inputSchema: schema,
 };
 
+const test = () => npm.test().length === 0;
+
+const commit = (comment) => {
+  git.add();
+  git.commit(comment);
+  return `✅ Tests passed - committed: ${comment}`;
+};
+
+const revert = () => {
+  git.reset();
+  git.clean();
+  return '❌ Tests failed - changes reverted';
+};
+
+const tcr = ({ comment }) =>
+  (test() && commit(comment)) || revert();
+
 export const run = async (params) => {
   if (!valid(params)) return text(error(params));
 
   format();
 
-  return text(
-    status() + sh('tcr/node/test', args(params))
-  );
+  return text(status() + tcr(params));
 };
