@@ -6,11 +6,11 @@ import {
 
 const section = (title, files) =>
   files.length > 0
-    ? `\n${title}:\n${files.join('\n')}`
+    ? `\n${title}:\n\n${files.join('\n')}\n\n`
     : '';
 
 const list = () =>
-  section('Files changed:', [
+  section('Files changed', [
     ...changed(),
     ...staged(),
   ]);
