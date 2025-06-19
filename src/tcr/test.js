@@ -1,9 +1,6 @@
 import { run } from '../helpers/cmd.js';
-import { project } from '../helpers/project.js';
+import project from '../helpers/project.js';
 
-export const test = () => {
-  const result = run(project.test);
-  return result.success;
-};
+export const test = () => run(project.test);
 
 export default test;
