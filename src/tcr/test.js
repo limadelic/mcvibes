@@ -1,12 +1,9 @@
-import npm from '../helpers/npm.js';
+import { run } from '../helpers/cmd.js';
+import { project } from '../helpers/project.js';
 
 export const test = () => {
-  try {
-    npm.test();
-    return true;
-  } catch {
-    return false;
-  }
+  const result = run(project.test);
+  return result.success;
 };
 
 export default test;
